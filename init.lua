@@ -866,6 +866,15 @@ require('lazy').setup({
       --  - ci'  - [C]hange [I]nside [']quote
       require('mini.ai').setup { n_lines = 500 }
 
+      local minimap = require 'mini.map'
+      require('mini.map').setup {
+        integrations = {
+          minimap.gen_integration.builtin_search(),
+          minimap.gen_integration.gitsigns(),
+          minimap.gen_integration.diagnostic(),
+        },
+      }
+
       -- Add/delete/replace surroundings (brackets, quotes, etc.)
       --
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
@@ -1023,6 +1032,13 @@ vim.keymap.set('i', 'jk', function()
   -- Save the current file
   vim.cmd 'write'
 end, { noremap = true, silent = true })
+
+vim.keymap.set('n', '<leader>mc', MiniMap.close)
+vim.keymap.set('n', '<leader>mf', MiniMap.toggle_focus)
+vim.keymap.set('n', '<leader>mo', MiniMap.open)
+vim.keymap.set('n', '<leader>mr', MiniMap.refresh)
+vim.keymap.set('n', '<leader>ms', MiniMap.toggle_side)
+vim.keymap.set('n', '<leader>mt', MiniMap.toggle)
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
