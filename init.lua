@@ -616,7 +616,6 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        -- pyright = {},
         pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -1011,6 +1010,19 @@ vim.o.updatetime = 500 -- Set delay (500ms)
 vim.cmd [[
   autocmd CursorHold * lua vim.diagnostic.open_float(nil, { scope = "cursor", focusable = false })
 ]]
+
+vim.keymap.set('x', '<leader>p', '"_dP', { noremap = true, silent = true, desc = 'Paste without overwriting register' })
+-- Use `jj` to exit insert mode
+vim.keymap.set('i', 'jj', '<ESC>', { noremap = true, silent = true })
+
+-- Use `jk` to exit insert mode and save the file
+vim.keymap.set('i', 'jk', function()
+  -- Exit insert mode
+  vim.cmd 'stopinsert'
+
+  -- Save the current file
+  vim.cmd 'write'
+end, { noremap = true, silent = true })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
