@@ -1040,5 +1040,7 @@ vim.keymap.set('n', '<leader>mr', MiniMap.refresh)
 vim.keymap.set('n', '<leader>ms', MiniMap.toggle_side)
 vim.keymap.set('n', '<leader>mt', MiniMap.toggle)
 
+vim.o.colorcolumn = '100'
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
