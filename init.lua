@@ -752,6 +752,7 @@ require('lazy').setup({
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
+      -- 'hrsh7th/cmp-nvim-lsp-signature-help',
     },
     config = function()
       -- See `:help cmp`
@@ -827,6 +828,7 @@ require('lazy').setup({
           },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
+          -- { name = 'nvim_lsp_signature_help' },
           { name = 'path' },
         },
       }
@@ -946,6 +948,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'custom.plugins.lazygit',
   require 'custom.plugins.harpoon',
+  require 'custom.plugins.lsp_signature',
 
   {
     'Mofiqul/vscode.nvim',
