@@ -1019,9 +1019,9 @@ require('lazy').setup({
 })
 
 vim.o.updatetime = 500 -- Set delay (500ms)
-vim.cmd [[
-  autocmd CursorHold * lua vim.diagnostic.open_float(nil, { scope = "cursor", focusable = false })
-]]
+-- vim.cmd [[
+--   autocmd CursorHold * lua vim.diagnostic.open_float(nil, { scope = "cursor", focusable = false })
+-- ]]
 
 vim.keymap.set('x', '<leader>p', '"_dP', { noremap = true, silent = true, desc = 'Paste without overwriting register' })
 -- Use `jj` to exit insert mode
@@ -1043,7 +1043,24 @@ vim.keymap.set('n', '<leader>mr', MiniMap.refresh)
 vim.keymap.set('n', '<leader>ms', MiniMap.toggle_side)
 vim.keymap.set('n', '<leader>mt', MiniMap.toggle)
 
-vim.o.colorcolumn = '100'
+vim.keymap.set('n', '<leader>k', function()
+  -- If we find a floating window, close it.
+  local found_float = false
+  for _, win in ipairs(vim.api.nvim_list_wins()) do
+    if vim.api.nvim_win_get_config(win).relative ~= '' then
+      vim.api.nvim_win_close(win, true)
+      found_float = true
+    end
+  end
+
+  -- if found_float then
+  --   return
+  -- end
+
+  vim.diagnostic.open_float(nil, { focus = false, scope = 'cursor' })
+end, { desc = 'Toggle Diagnostics' })
+
+vim.opt.colorcolumn = '100'
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
