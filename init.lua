@@ -1062,5 +1062,10 @@ end, { desc = 'Toggle Diagnostics' })
 
 vim.opt.colorcolumn = '100'
 
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 0
+vim.opt.shiftwidth = 0
+vim.opt.expandtab = true
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
