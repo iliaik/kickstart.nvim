@@ -254,6 +254,12 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+    config = function()
+      local gs = require 'gitsigns'
+      gs.setup()
+      vim.keymap.set('n', '<leader>gp', gs.preview_hunk, { desc = 'Git Previe Hunk' })
+      vim.keymap.set('n', '<leader>gr', gs.reset_hunk, { desc = 'Git Revert Hunk' })
+    end,
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
