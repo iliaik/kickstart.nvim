@@ -245,20 +245,32 @@ require('lazy').setup({
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
     config = function()
-      local gs = require 'gitsigns'
-      gs.setup()
-      vim.keymap.set('n', '<leader>gp', gs.preview_hunk, { desc = 'Git Previe Hunk' })
-      vim.keymap.set('n', '<leader>gr', gs.reset_hunk, { desc = 'Git Revert Hunk' })
+      local gitsigns = require 'gitsigns'
+      gitsigns.setup()
+
+      local function map(mode, l, r, opts)
+        opts = opts or {}
+        -- opts.buffer = bufnr
+        vim.keymap.set(mode, l, r, opts)
+      end
+
+      -- Actions
+      map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'Git Stage Hunk' })
+      map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'Git Reset Hunk' })
+
+      map('v', '<leader>hs', function()
+        gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+      end, { desc = 'Git Stage Selected' })
+
+      map('v', '<leader>hr', function()
+        gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+      end, { desc = 'Git Reset Selected' })
+
+      map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'Git Stage Buffer' })
+      map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'Git Reset Buffer' })
+      map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'Git Preview Hunk' })
+      map('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'Git Preview Hunk Inline' })
     end,
   },
 
