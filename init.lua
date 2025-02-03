@@ -1076,7 +1076,11 @@ vim.keymap.set('n', '<leader>k', function()
   -- end
 
   vim.diagnostic.open_float(nil, { focus = false, scope = 'cursor' })
-end, { desc = 'Toggle Diagnostics' })
+end, { desc = 'Toggle Diagnostics float window' })
+
+vim.keymap.set('n', '<leader>dt', function()
+  vim.diagnostic.enable(not vim.diagnostic.is_enabled())
+end, { desc = 'Toggle Diagnostics for file' })
 
 vim.opt.colorcolumn = '100'
 
