@@ -22,4 +22,51 @@ return {
       },
     },
   },
+  config = function()
+    require('neo-tree').setup {
+      filesystem = {
+        filtered_items = {
+          -- visible = true,
+          show_hidden_count = true,
+
+          hide_dotfiles = false,
+          hide_gitignored = false,
+        },
+        follow_current_file = {
+          enabled = true,
+          leave_dirs_open = false,
+        },
+      },
+      buffers = { follow_current_file = { enable = true } },
+    }
+    -- Define the function as a local helper
+    local function ToggleOrFocusNeoTree()
+      -- If the current buffer is neo-tree, toggle (close) it
+      if vim.bo.filetype == 'neo-tree' then
+        vim.cmd 'Neotree toggle'
+        return
+      end
+
+      -- Look for an existing neo-tree window
+      local neo_tree_win = nil
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+        if ft == 'neo-tree' then
+          neo_tree_win = win
+          break
+        end
+      end
+
+      if neo_tree_win then
+        -- Focus the neo-tree window if found
+        vim.api.nvim_set_current_win(neo_tree_win)
+      else
+        -- Otherwise, open neo-tree
+        vim.cmd 'Neotree toggle'
+      end
+    end
+    -- vim.api.nvim_set_keymap('n', '\\', ':Neotree toggle<CR>', { noremap = true, silent = true })
+    vim.keymap.set('n', '\\', ToggleOrFocusNeoTree, { noremap = true, silent = true })
+  end,
 }
