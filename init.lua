@@ -1083,6 +1083,8 @@ vim.keymap.set('n', '<leader>dt', function()
   vim.diagnostic.enable(not vim.diagnostic.is_enabled())
 end, { desc = 'Toggle Diagnostics for file' })
 
+vim.api.nvim_set_keymap('n', '<Leader>ff', ':lua require"telescope.builtin".find_files({ no_ignore=true, no_ignore_parent=true, hidden=true })<CR>', {noremap = true, silent = true})
+
 vim.opt.colorcolumn = '100'
 
 vim.opt.tabstop = 4
