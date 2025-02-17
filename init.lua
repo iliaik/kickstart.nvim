@@ -968,6 +968,9 @@ require('lazy').setup({
   require 'custom.plugins.lazygit',
   require 'custom.plugins.harpoon',
   require 'custom.plugins.lsp_signature',
+  {
+	  'HiPhish/rainbow-delimiters.nvim',
+  },
 
   {
     'Mofiqul/vscode.nvim',
