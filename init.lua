@@ -973,6 +973,22 @@ require('lazy').setup({
   {
 	  'HiPhish/rainbow-delimiters.nvim',
   },
+    {
+      "sindrets/diffview.nvim",
+      cmd = { "DiffviewOpen", "DiffviewFileHistory" },
+      -- stylua: ignore
+      keys = {
+          { "<leader>go", "<cmd>DiffviewOpen<cr>", mode = "n", desc = "Open Diffview" },
+
+          { "<leader>gt", "<cmd>DiffviewToggleFiles<cr>", mode = "n", desc = "Toggle Diffview Files" },
+          { "<leader>gq", "<cmd>DiffviewClose<cr>", mode = "n", desc = "Quit Diffview" },
+      },
+      opts = {
+          file_panel = {
+              win_config = { position = "right" },
+          },
+      },
+  },
 
   {
     'Mofiqul/vscode.nvim',
