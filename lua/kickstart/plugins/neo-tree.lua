@@ -36,6 +36,7 @@ return {
           enabled = true,
           leave_dirs_open = false,
         },
+        follow_symlinks = true,
       },
       buffers = { follow_current_file = { enable = true } },
     }
