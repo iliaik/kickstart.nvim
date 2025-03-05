@@ -271,6 +271,7 @@ require('lazy').setup({
       map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'Git Reset Buffer' })
       map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'Git Preview Hunk' })
       map('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'Git Preview Hunk Inline' })
+      map('n', '<leader>hb', gitsigns.toggle_current_line_blame, {desc = 'Git Toggle Inline Line [B]lames'})
     end,
   },
 
