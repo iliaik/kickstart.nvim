@@ -983,6 +983,8 @@ require('lazy').setup({
 
           { "<leader>gt", "<cmd>DiffviewToggleFiles<cr>", mode = "n", desc = "Toggle Diffview Files" },
           { "<leader>gq", "<cmd>DiffviewClose<cr>", mode = "n", desc = "Quit Diffview" },
+          { "<leader>gfh", ":DiffviewFileHistory %<cr>", mode = "n", desc = "Diffview [F]ile [H]istory"},
+          { "<leader>gph", ":DiffviewFileHistory<cr>", mode = "n", desc = "Diffview [P]roject [H]istory"},
       },
       opts = {
           file_panel = {
