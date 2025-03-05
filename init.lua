@@ -1028,6 +1028,23 @@ require('lazy').setup({
       }
     end,
   },
+    {
+      "NeogitOrg/neogit",
+      dependencies = {
+
+        "nvim-lua/plenary.nvim",         -- required
+        "sindrets/diffview.nvim",        -- optional - Diff integration
+
+        -- Only one of these is needed.
+        "nvim-telescope/telescope.nvim", -- optional
+        -- "ibhagwan/fzf-lua",              -- optional
+        -- "echasnovski/mini.pick",         -- optional
+      },
+        keys = {
+            { "<leader>gn", "<cmd>Neogit<cr>", mode = "n", desc = "Open Neogit" },
+        },
+      config = true
+    },
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
   --
