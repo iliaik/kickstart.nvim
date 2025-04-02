@@ -701,10 +701,28 @@ require('lazy').setup({
       {
         '<leader>f',
         function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
+          local conform = require('conform')
+
+
+          -- Get the current mode
+          local mode = vim.fn.mode()
+          local opts = { async = true, lsp_format = 'fallback' }
+
+
+          if mode == 'v' or mode == 'V' or mode == '' then
+            -- Get the visual selection range
+            local start_pos = vim.fn.getpos("'<")
+            local end_pos = vim.fn.getpos("'>")
+            opts.range = {
+              start = start_pos[2], -- Line number of start position
+              ["end"] = end_pos[2], -- Line number of end position
+            }
+          end
+
+          conform.format(opts)
         end,
-        mode = '',
-        desc = '[F]ormat buffer',
+        mode = { 'n', 'v' }, -- Enable in normal and visual mode
+        desc = '[F]ormat buffer or selection',
       },
     },
     opts = {
