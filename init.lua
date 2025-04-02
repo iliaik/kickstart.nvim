@@ -966,9 +966,27 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    init = function()
+      vim.filetype.add {
+        extension = {
+          fx = 'glsl',
+        },
+      }
+      local parser_config = require('nvim-treesitter.parsers').get_parser_configs()
+      parser_config.glsl = {
+        install_info = {
+
+          url = 'https://github.com/theHamsta/tree-sitter-glsl',
+          files = { 'src/parser.c' },
+          branch = 'main',
+        },
+
+        filetype = 'glsl',
+      }
+      end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'glsl' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
