@@ -1024,6 +1024,7 @@ require('lazy').setup({
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'custom.plugins.lazygit',
   require 'custom.plugins.harpoon',
+  require 'custom.plugins.noice',
   require 'custom.plugins.lsp_signature',
   {
 	  'HiPhish/rainbow-delimiters.nvim',
