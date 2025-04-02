@@ -1030,6 +1030,13 @@ require('lazy').setup({
 	  'HiPhish/rainbow-delimiters.nvim',
   },
     {
+        'vimpostor/vim-tpipeline',
+        config = function()
+            vim.g.tpipeline_autoembed = 1
+            vim.g.tpipeline_clearstl = 1
+        end,
+    },
+    {
       "sindrets/diffview.nvim",
       cmd = { "DiffviewOpen", "DiffviewFileHistory" },
       -- stylua: ignore
