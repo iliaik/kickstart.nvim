@@ -987,7 +987,7 @@ require('lazy').setup({
       end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'glsl' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'glsl', 'bitbake' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -1018,7 +1018,7 @@ require('lazy').setup({
   --
   -- require 'kickstart.plugins.debug',
   -- require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
@@ -1194,6 +1194,18 @@ vim.opt.tabstop = 4
 vim.opt.softtabstop = 0
 vim.opt.shiftwidth = 0
 vim.opt.expandtab = true
+
+vim.filetype.add({
+  extension = {
+    bb = "bitbake",
+    bbappend = "bitbake",
+    inc = "bitbake",
+    conf = "bitbake",
+  },
+})
+
+require'lspconfig'.bitbake_ls.setup{}
+
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Scroll down and center" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Scroll up and center" })

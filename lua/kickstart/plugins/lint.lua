@@ -7,6 +7,33 @@ return {
       local lint = require 'lint'
       lint.linters_by_ft = {
         markdown = { 'markdownlint' },
+        bitbake = { 'custom_oelint_adv'},
+      }
+
+      -- local pattern = '([^:]+):(%d+):(%a+):(.+):(.+)'
+      local pattern = '([^:]+):(%d+):(%a+):([^:]+):(.+)'
+      local groups = { 'file', 'lnum', 'severity', 'code', 'message' }
+      local severity_map = {
+        ['error'] = vim.diagnostic.severity.ERROR,
+        ['warning'] = vim.diagnostic.severity.WARN,
+        ['info'] = vim.diagnostic.severity.INFO,
+      }
+
+      require('lint').linters.custom_oelint_adv = {
+        name = 'custom_oelint_adv',
+        cmd = 'oelint-adv',
+        stdin = false,
+        args = {
+          '--quiet',
+          '--messageformat={path}:{line}:{severity}:{id}:{msg}',
+          '--release=kirkstone',
+        },
+        ignore_exitcode = true,
+        stream = 'stderr',
+        parser = require('lint.parser').from_pattern(
+          pattern, groups, severity_map,
+          { ['source'] = 'oelint-adv' }
+        ),
       }
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
