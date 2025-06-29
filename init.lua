@@ -661,6 +661,13 @@ require('lazy').setup({
           },
         },
         bashls = {},
+        clangd = {
+            cmd = {
+              "clangd",                       -- or clangd-17/18 …
+              "--compile-commands-dir=.",
+              "--query-driver=*/bin/*-gcc,*/bin/*-g++,/usr/bin/gcc,*"
+            }
+        },
       }
 
       -- Ensure the servers and tools above are installed
