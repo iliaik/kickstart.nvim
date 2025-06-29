@@ -1213,6 +1213,20 @@ vim.filetype.add({
 
 require'lspconfig'.bitbake_ls.setup{}
 
+vim.keymap.set('n', '<leader>df', function()
+  require('telescope.builtin').find_files {
+    attach_mappings = function(_, map)
+      map('i', '<CR>', function(prompt_bufnr)
+        local actions = require('telescope.actions')
+        local action_state = require('telescope.actions.state')
+        local entry = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        vim.cmd('vert diffsplit ' .. vim.fn.fnameescape(entry.path))
+      end)
+      return true
+    end,
+  }
+end, { desc = "Diff with file", noremap = true, silent = true })
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Scroll down and center" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Scroll up and center" })
