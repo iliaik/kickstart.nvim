@@ -1206,6 +1206,8 @@ vim.opt.softtabstop = 0
 vim.opt.shiftwidth = 0
 vim.opt.expandtab = true
 
+vim.g.clipboard = 'osc52'
+
 vim.filetype.add({
   extension = {
     bb = "bitbake",
