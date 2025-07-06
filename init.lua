@@ -711,31 +711,73 @@ require('lazy').setup({
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     keys = {
+      -- {
+      --   '<leader>f',
+      --   function()
+      --     local conform = require('conform')
+      --
+      --
+      --     -- Get the current mode
+      --     local mode = vim.fn.mode()
+      --     local opts = { async = true, lsp_format = 'fallback' }
+      --
+      --
+      --     if mode == 'v' or mode == 'V' or mode == '' then
+      --       -- Get the visual selection range
+      --       local start_pos = vim.fn.getpos("'<")
+      --       local end_pos = vim.fn.getpos("'>")
+      --       opts.range = {
+      --         start = start_pos[2], -- Line number of start position
+      --         ["end"] = end_pos[2], -- Line number of end position
+      --       }
+      --     end
+      --
+      --     conform.format(opts)
+      --   end,
+      --   mode = { 'n', 'v' }, -- Enable in normal and visual mode
+      --   desc = '[F]ormat buffer or selection',
+      -- },
+      -- {
+      --   '<leader>f',
+      --   function()
+      --     -- Conform automatically detects a visual selection and
+      --     -- formats just that range. No manual math needed.
+      --     require('conform').format({
+      --       async       = true,
+      --       lsp_format  = 'fallback', -- use LSP only if no external formatter
+      --     })
+      --   end,
+      --   mode = { 'n', 'v' },
+      --   desc = '[F]ormat buffer / selection',
+      -- },
       {
         '<leader>f',
         function()
           local conform = require('conform')
 
+          -- are we *inside* any visual mode? (char, line or block)
+          local mode      = vim.fn.mode()
+          local in_visual = mode == 'v' or mode == 'V' or mode == '\22'
 
-          -- Get the current mode
-          local mode = vim.fn.mode()
-          local opts = { async = true, lsp_format = 'fallback' }
+          if in_visual then
+            -- marks '< and '> contain the selection’s boundaries
+            local start  = vim.api.nvim_buf_get_mark(0, '<') -- {row, col}
+            local finish = vim.api.nvim_buf_get_mark(0, '>')
 
-
-          if mode == 'v' or mode == 'V' or mode == '' then
-            -- Get the visual selection range
-            local start_pos = vim.fn.getpos("'<")
-            local end_pos = vim.fn.getpos("'>")
-            opts.range = {
-              start = start_pos[2], -- Line number of start position
-              ["end"] = end_pos[2], -- Line number of end position
-            }
+            conform.format({
+              async      = true,
+              lsp_format = 'fallback',
+              range      = { start = start, ['end'] = finish },
+            })
+          else
+            conform.format({
+              async      = true,
+              lsp_format = 'fallback', -- whole buffer
+            })
           end
-
-          conform.format(opts)
         end,
-        mode = { 'n', 'v' }, -- Enable in normal and visual mode
-        desc = '[F]ormat buffer or selection',
+        mode = { 'n', 'v' },
+        desc = '[F]ormat buffer / selection',
       },
     },
     opts = {
