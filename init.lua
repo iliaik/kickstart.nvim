@@ -1201,10 +1201,10 @@ vim.o.updatetime = 500 -- Set delay (500ms)
 
 vim.keymap.set('x', '<leader>p', '"_dP', { noremap = true, silent = true, desc = 'Paste without overwriting register' })
 -- Use `jj` to exit insert mode
-vim.keymap.set('i', 'jj', '<ESC>', { noremap = true, silent = true })
+vim.keymap.set('i', 'jk', '<ESC>', { noremap = true, silent = true })
 
 -- Use `jk` to exit insert mode and save the file
-vim.keymap.set('i', 'jk', function()
+vim.keymap.set('i', 'jj', function()
   -- Exit insert mode
   vim.cmd 'stopinsert'
 
