@@ -35,6 +35,11 @@ return {
           { ['source'] = 'oelint-adv' }
         ),
       }
+        local md = require("lint").linters.markdownlint
+        md.args = vim.list_extend({
+          "--config",
+          vim.fn.expand("~/.markdownlint.json"),
+        }, md.args or {})
 
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
