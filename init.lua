@@ -1270,6 +1270,7 @@ require'lspconfig'.bitbake_ls.setup{}
 
 vim.keymap.set('n', '<leader>df', function()
   require('telescope.builtin').find_files {
+    hidden = true,
     attach_mappings = function(_, map)
       map('i', '<CR>', function(prompt_bufnr)
         local actions = require('telescope.actions')
