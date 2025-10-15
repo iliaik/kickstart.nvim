@@ -1084,6 +1084,8 @@ require('lazy').setup({
   -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
   require 'custom.plugins.lazygit',
   require 'custom.plugins.harpoon',
+  require 'custom.plugins.render-neovim',
+  require 'custom.plugins.live-preview',
   require 'custom.plugins.noice',
   require 'custom.plugins.lsp_signature',
   {
@@ -1184,7 +1186,6 @@ require('lazy').setup({
     icons = vim.g.have_nerd_font and {} or {
       cmd = '⌘',
       config = '🛠',
-      event = '📅',
       ft = '📂',
       init = '⚙',
       keys = '🗝',
@@ -1290,6 +1291,51 @@ vim.keymap.set('n', '<leader>cp', [[:let @+ = expand('%:p')<CR>]], { desc = "Cop
 
 vim.keymap.set('n', "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set('n', "<M-k>", "<cmd>cprev<CR>")
+
+-- helper: open a new tab for current buffer and run gitsigns diff
+local function diff_in_tab(ref)
+  vim.cmd('tab split')                 -- put current buffer in a fresh tab
+  require('gitsigns').diffthis(ref)    -- open vertical diffsplit in this tab
+end
+
+-- Diff current buffer: index ↔ worktree
+vim.keymap.set('n', '<leader>gd', function()
+  diff_in_tab()                        -- same as diffthis(nil)
+end, { desc = 'Diff (index↔worktree) in new tab' })
+
+-- Diff current buffer: HEAD ↔ worktree
+vim.keymap.set('n', '<leader>gD', function()
+  diff_in_tab('HEAD')
+end, { desc = 'Diff (HEAD↔worktree) in new tab' })
+
+-- Diff current buffer vs user-chosen ref
+vim.keymap.set('n', '<leader>gch', function()
+  local ref = vim.fn.input('Commit/Ref: ')
+  if ref ~= '' then diff_in_tab(ref) end
+end, { desc = 'Diff vs ref in new tab' })
+
+-- Telescope: pick a commit that touched THIS file → diffsplit in a new tab
+vim.keymap.set('n', '<leader>gfd', function()
+  require('telescope.builtin').git_bcommits{
+    attach_mappings = function(_, map)
+      map('i', '<CR>', function(prompt_bufnr)
+        local a = require('telescope.actions')
+        local s = require('telescope.actions.state')
+        local entry = s.get_selected_entry()
+        a.close(prompt_bufnr)
+        diff_in_tab(entry.value)       -- commit hash
+      end)
+      map('n', '<CR>', function(prompt_bufnr)
+        local a = require('telescope.actions')
+        local s = require('telescope.actions.state')
+        local entry = s.get_selected_entry()
+        a.close(prompt_bufnr)
+        diff_in_tab(entry.value)
+      end)
+      return true
+    end
+  }
+end, { desc = 'Pick file commit → diff in new tab' })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=4 sts=0 sw=0 et
