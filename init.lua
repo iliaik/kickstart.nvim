@@ -1277,7 +1277,7 @@ vim.keymap.set('n', '<leader>df', function()
         local action_state = require('telescope.actions.state')
         local entry = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-        vim.cmd('vert diffsplit ' .. vim.fn.fnameescape(entry.path))
+        vim.cmd('tab split | vert diffsplit ' .. vim.fn.fnameescape(entry.path))
       end)
       return true
     end,
