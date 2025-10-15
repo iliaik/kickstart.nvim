@@ -67,7 +67,67 @@ return {
         vim.cmd 'Neotree toggle'
       end
     end
+
+    local function OpenOrFocusNeoTreeThisTab()
+      -- if there's a neo-tree window in the current tab, focus it
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].filetype == 'neo-tree' then
+          vim.cmd('Neotree focus')
+          return
+        end
+      end
+      -- otherwise open a fresh one in this tab
+      vim.cmd('Neotree filesystem reveal left')
+    end
+
+    local function ToggleNeoTreeThisTab()
+      local neo_win
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].filetype == 'neo-tree' then
+          neo_win = win
+          break
+        end
+      end
+
+      if neo_win then
+        -- Close just the Neo-tree window in this tab
+        vim.api.nvim_win_close(neo_win, true)
+      else
+        -- Open a fresh Neo-tree in this tab
+        vim.cmd('Neotree filesystem reveal left')
+      end
+    end
+
+    local function ToggleOrFocusNeoTreeThisTab()
+      local cur_win = vim.api.nvim_get_current_win()
+      local neo_win = nil
+
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].filetype == 'neo-tree' then
+          neo_win = win
+          break
+        end
+      end
+
+      if neo_win then
+        if cur_win == neo_win then
+          -- focused on neo-tree -> close it
+          vim.api.nvim_win_close(neo_win, true)
+        else
+          -- neo-tree exists but not focused -> focus it
+          vim.api.nvim_set_current_win(neo_win) -- or: vim.cmd('Neotree focus')
+        end
+      else
+        -- no neo-tree in this tab -> open it here
+        vim.cmd('Neotree filesystem reveal left')
+      end
+    end
+
     -- vim.api.nvim_set_keymap('n', '\\', ':Neotree toggle<CR>', { noremap = true, silent = true })
-    vim.keymap.set('n', '\\', ToggleOrFocusNeoTree, { noremap = true, silent = true })
+    -- vim.keymap.set('n', '\\', ToggleOrFocusNeoTree, { noremap = true, silent = true })
+    vim.keymap.set('n', '\\', ToggleOrFocusNeoTreeThisTab, { noremap = true, silent = true })
   end,
 }
