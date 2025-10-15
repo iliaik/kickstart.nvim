@@ -1286,5 +1286,7 @@ end, { desc = "Diff with file", noremap = true, silent = true })
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Scroll down and center" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Scroll up and center" })
+vim.keymap.set('n', '<leader>cp', [[:let @+ = expand('%:p')<CR>]], { desc = "Copy file path" })
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=4 sts=0 sw=0 et
