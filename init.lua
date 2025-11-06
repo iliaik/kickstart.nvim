@@ -1337,6 +1337,23 @@ vim.keymap.set('n', '<leader>gfd', function()
   }
 end, { desc = 'Pick file commit → diff in new tab' })
 
+vim.keymap.set("n", "<leader>gcl", function()
+  local l = vim.fn.line(".")
+  local file = vim.fn.expand("%")
+  local cmd = string.format('git blame -L %d,%d --porcelain -- %s', l, l, vim.fn.fnameescape(file))
+  local out = vim.fn.systemlist(cmd)
+  if vim.v.shell_error ~= 0 or #out == 0 then
+    vim.notify("No blame info for this line", vim.log.levels.WARN)
+    return
+  end
+  local sha = out[1]:match("^%x+")
+  if not sha or sha == "0000000000000000000000000000000000000000" then
+    vim.notify("Uncommitted line or no SHA found", vim.log.levels.WARN)
+    return
+  end
+  vim.cmd("DiffviewOpen " .. sha .. "^!")
+end, { desc = "Diffview commit for current line" })
+
 vim.g.star_once = 0
 function StarSmart()
   local word = [[\<]] .. vim.fn.expand('<cword>') .. [[\>]]
