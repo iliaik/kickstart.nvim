@@ -1337,5 +1337,18 @@ vim.keymap.set('n', '<leader>gfd', function()
   }
 end, { desc = 'Pick file commit → diff in new tab' })
 
+vim.g.star_once = 0
+function StarSmart()
+  local word = [[\<]] .. vim.fn.expand('<cword>') .. [[\>]]
+  if vim.fn.getreg('/') ~= word then
+    vim.fn.setreg('/', word)
+    vim.opt.hlsearch = true
+    vim.g.star_once = 1
+  else
+    vim.g.star_once = 0
+    vim.cmd('normal! *')
+  end
+end
+vim.keymap.set('n', '*', StarSmart, { noremap = true, silent = true })
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=4 sts=0 sw=0 et
