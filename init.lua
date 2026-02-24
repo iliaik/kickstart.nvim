@@ -1278,6 +1278,13 @@ vim.g.clipboard = 'osc52'
 
 vim.filetype.add({
   extension = {
+    service = "systemd",
+    socket  = "systemd",
+    timer   = "systemd",
+    mount   = "systemd",
+    target  = "systemd",
+    path    = "systemd",
+    slice   = "systemd",
     bb = "bitbake",
     bbappend = "bitbake",
     inc = "bitbake",
