@@ -537,7 +537,20 @@ require('lazy').setup({
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+            local function telescope_from_lsp_list(opts)
+              vim.fn.setqflist({}, ' ', opts)
+
+              if #opts.items == 1 then
+                vim.cmd('cfirst')
+              else
+                require('telescope.builtin').quickfix({})
+              end
+            end
+
+            map('gd', function()
+              vim.lsp.buf.definition({ on_list = telescope_from_lsp_list })
+            end, '[G]oto [D]efinition')
+          -- map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -651,6 +664,7 @@ require('lazy').setup({
         --
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         ts_ls = {},
+        cmake = {},
         --
 
         lua_ls = {
@@ -675,6 +689,7 @@ require('lazy').setup({
               "--query-driver=*/bin/*-gcc,*/bin/*-g++,/usr/bin/gcc,*"
             }
         },
+        bufls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -690,10 +705,12 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
     ensure_installed = vim.tbl_filter(function(name)
-      return name ~= 'dts_lsp'
+      return name ~= 'dts_lsp' and name ~= 'bufls'
         end, ensure_installed)
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
+        'buf-language-server',
+        'buf'
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -818,6 +835,7 @@ require('lazy').setup({
         bash = { 'shfmt', 'shellcheck' },
         zsh = { 'shfmt', 'shellcheck' },
         sh = { 'shfmt', 'shellcheck' },
+        proto = { 'buf' },
       },
     },
   },
@@ -1047,7 +1065,7 @@ require('lazy').setup({
       end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'glsl', 'bitbake' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'glsl', 'bitbake', 'cmake', 'proto' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
@@ -1264,6 +1282,7 @@ vim.filetype.add({
     bbappend = "bitbake",
     inc = "bitbake",
     conf = "bitbake",
+    proto = "proto",
   },
 })
 
