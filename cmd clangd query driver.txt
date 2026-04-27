@@ -1,0 +1,4 @@
+/home/ilia/.local/share/nvim/lazy/nvim-lspconfig/lsp/clangd.lua
+  cmd = { 'clangd', '--query-driver=/opt/poky/**/sysroots/**/usr/bin/**/*-g++' },
+  filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+
