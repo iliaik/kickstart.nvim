@@ -1380,6 +1380,34 @@ vim.keymap.set("n", "<leader>gcl", function()
   vim.cmd("DiffviewOpen " .. sha .. "^!")
 end, { desc = "Diffview commit for current line" })
 
+vim.keymap.set("n", "<leader>a", function()
+  local clients = vim.lsp.get_clients({ bufnr = 0, name = "clangd" })
+
+  if #clients == 0 then
+    vim.notify("clangd is not attached to this buffer", vim.log.levels.WARN)
+    return
+  end
+
+  clients[1]:request(
+    "textDocument/switchSourceHeader",
+    { uri = vim.uri_from_bufnr(0) },
+    function(err, result)
+      if err then
+        vim.notify("switchSourceHeader failed: " .. err.message, vim.log.levels.ERROR)
+        return
+      end
+
+      if not result or result == "" then
+        vim.notify("No corresponding source/header found", vim.log.levels.WARN)
+        return
+      end
+
+      vim.cmd.edit(vim.uri_to_fname(result))
+    end,
+    0
+  )
+end, { desc = "Switch source/header" })
+
 vim.g.star_once = 0
 function StarSmart()
   local word = [[\<]] .. vim.fn.expand('<cword>') .. [[\>]]
