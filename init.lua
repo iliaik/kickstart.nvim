@@ -690,7 +690,7 @@ require('lazy').setup({
               "--query-driver=*/bin/*-gcc,*/bin/*-g++,/usr/bin/gcc,*"
             }
         },
-        bufls = {},
+        buf_ls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -706,11 +706,11 @@ require('lazy').setup({
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
     ensure_installed = vim.tbl_filter(function(name)
-      return name ~= 'dts_lsp' and name ~= 'bufls'
+      return name ~= 'dts_lsp' and name ~= 'buf_ls'
         end, ensure_installed)
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
-        'buf-language-server',
+        -- 'buf-language-server',
         'buf'
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
