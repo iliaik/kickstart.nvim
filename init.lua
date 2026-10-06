@@ -1326,7 +1326,10 @@ end, { desc = "Diff with file", noremap = true, silent = true })
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, desc = "Scroll down and center" })
 vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, desc = "Scroll up and center" })
-vim.keymap.set('n', '<leader>cp', [[:let @+ = expand('%:p')<CR>]], { desc = "Copy file path" })
+vim.keymap.set("n", "<leader>cp", function()
+  vim.fn.setreg("+", vim.api.nvim_buf_get_name(0))
+end, { desc = "Copy file path" })
+-- vim.keymap.set('n', '<leader>cp', [[:let @+ = expand('%:p')<CR>]], { desc = "Copy file path" })
 
 vim.keymap.set('n', "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set('n', "<M-k>", "<cmd>cprev<CR>")
