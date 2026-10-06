@@ -1226,17 +1226,29 @@ vim.o.updatetime = 500 -- Set delay (500ms)
 -- ]]
 
 vim.keymap.set('x', '<leader>p', '"_dP', { noremap = true, silent = true, desc = 'Paste without overwriting register' })
--- Use `jj` to exit insert mode
+-- Use `jk` / `ол` to exit insert mode
 vim.keymap.set('i', 'jk', '<ESC>', { noremap = true, silent = true })
+vim.keymap.set('i', 'ол', '<ESC>', { noremap = true, silent = true })
 
--- Use `jk` to exit insert mode and save the file
-vim.keymap.set('i', 'jj', function()
-  -- Exit insert mode
+-- Use `jj` / `оо` to exit insert mode and save the file
+local function exit_and_save()
   vim.cmd 'stopinsert'
-
-  -- Save the current file
   vim.cmd 'write'
-end, { noremap = true, silent = true })
+end
+
+vim.keymap.set('i', 'jj', exit_and_save, { noremap = true, silent = true })
+vim.keymap.set('i', 'оо', exit_and_save, { noremap = true, silent = true })
+-- -- Use `jj` to exit insert mode
+-- vim.keymap.set('i', 'jk', '<ESC>', { noremap = true, silent = true })
+--
+-- -- Use `jk` to exit insert mode and save the file
+-- vim.keymap.set('i', 'jj', function()
+--   -- Exit insert mode
+--   vim.cmd 'stopinsert'
+--
+--   -- Save the current file
+--   vim.cmd 'write'
+-- end, { noremap = true, silent = true })
 
 vim.keymap.set('n', '<leader>mc', MiniMap.close)
 vim.keymap.set('n', '<leader>mf', MiniMap.toggle_focus)
@@ -1422,5 +1434,8 @@ function StarSmart()
   end
 end
 vim.keymap.set('n', '*', StarSmart, { noremap = true, silent = true })
+
+vim.opt.langmap = "йq,цw,уe,кr,еt,нy,гu,шi,щo,зp,х[,ъ],фa,ыs,вd,аf,пg,рh,оj,лk,дl,ж\\;,э',яz,чx,сc,мv,иb,тn,ьm"
+
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=4 sts=0 sw=0 et
