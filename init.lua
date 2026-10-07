@@ -1107,6 +1107,7 @@ require('lazy').setup({
   require 'custom.plugins.live-preview',
   require 'custom.plugins.noice',
   require 'custom.plugins.lsp_signature',
+  require 'custom.plugins.aerial',
   {
 	  'HiPhish/rainbow-delimiters.nvim',
   },
