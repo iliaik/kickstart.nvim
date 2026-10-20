@@ -1064,6 +1064,17 @@ require('lazy').setup({
         filetype = 'glsl',
       }
       end,
+    config = function(_, opts)
+      if vim.fn.has 'nvim-0.12' == 1 then
+        -- Neovim 0.12 passes node lists; this Treesitter version expects the last node.
+        vim.treesitter.query.add_predicate('kind-eq?', function(match, _, _, predicate)
+          local nodes = match[predicate[2]]
+          local node = nodes and nodes[#nodes]
+          return not node or vim.tbl_contains({ unpack(predicate, 3) }, node:type())
+        end, { force = true })
+      end
+      require('nvim-treesitter.configs').setup(opts)
+    end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'glsl', 'bitbake', 'cmake', 'proto' },
@@ -1307,7 +1318,7 @@ vim.filetype.add({
   },
 })
 
-require'lspconfig'.bitbake_ls.setup{}
+-- require'lspconfig'.bitbake_ls.setup{}
 
 vim.keymap.set('n', '<leader>df', function()
   require('telescope.builtin').find_files {
