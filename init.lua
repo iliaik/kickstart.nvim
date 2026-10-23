@@ -1065,14 +1065,7 @@ require('lazy').setup({
       }
       end,
     config = function(_, opts)
-      if vim.fn.has 'nvim-0.12' == 1 then
-        -- Neovim 0.12 passes node lists; this Treesitter version expects the last node.
-        vim.treesitter.query.add_predicate('kind-eq?', function(match, _, _, predicate)
-          local nodes = match[predicate[2]]
-          local node = nodes and nodes[#nodes]
-          return not node or vim.tbl_contains({ unpack(predicate, 3) }, node:type())
-        end, { force = true })
-      end
+      require('custom.treesitter_compat').setup()
       require('nvim-treesitter.configs').setup(opts)
     end,
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
