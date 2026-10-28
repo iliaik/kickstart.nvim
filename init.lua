@@ -1117,6 +1117,7 @@ require('lazy').setup({
   },
     {
         'vimpostor/vim-tpipeline',
+        enabled = false, -- Keep Neovim's statusline independent of tmux.
         config = function()
             vim.g.tpipeline_autoembed = 1
             vim.g.tpipeline_clearstl = 1
