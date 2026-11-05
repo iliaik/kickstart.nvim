@@ -978,6 +978,18 @@ require('lazy').setup({
     end,
   },
 
+  {
+    'shortcuts/no-neck-pain.nvim',
+    version = '*',
+    cmd = { 'NoNeckPain', 'NoNeckPainResize' },
+    keys = {
+      { '<leader>np', '<cmd>NoNeckPain<CR>', desc = 'Toggle centered buffer' },
+    },
+    opts = {
+      width = 110, -- Leave room for line numbers, signs, and colorcolumn at 100.
+    },
+  },
+
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
